@@ -1,109 +1,104 @@
 #include <gtk/gtk.h>
 
-static void
-print_hello (GtkWidget *widget,
-             gpointer   data)
-{
-    g_print ("Hello World\n");
-}
-
-static void
-print_input (GtkWidget *widget,
-             gpointer   data)
-{
-    g_print (data);
+static void print_hello(GtkWidget *p_button, gpointer user_data) {
+    g_print("HELLO WORLD\n");
 }
 
 static void on_show_text_from_buffer(GtkWidget *p_button, gpointer user_data) {
-    gtk_button_set_label(GTK_BUTTON(p_button), "Clicked!");
-    g_print("%s\n", (char *)user_data); // I wanna print out what it's been typed in here
+    GtkEntry *entry = GTK_ENTRY(user_data);
+    GtkEntryBuffer *buffer = gtk_entry_get_buffer(entry);
+    const char *entry_text = gtk_entry_buffer_get_text(buffer);
+    g_print("Text entered: %s\n", entry_text);
 }
 
-static void
-activate (GtkApplication *app,
-          gpointer        user_data)
-{
+static void open_login_page(GtkButton *button, gpointer user_data) {
+    GtkApplication *app = GTK_APPLICATION(user_data);
+
+    // Create a new login window
+    GtkWidget *login_window = gtk_application_window_new(app);
+    gtk_window_set_title(GTK_WINDOW(login_window), "Login Page");
+
+    // Create a grid for the login form
+    GtkWidget *login_form = gtk_grid_new();
+    gtk_window_set_child(GTK_WINDOW(login_window), login_form);
+
+    // Create an entry widget
+    GtkWidget *entry = gtk_entry_new();
+    gtk_entry_set_placeholder_text(GTK_ENTRY(entry), "Enter your username");
+    gtk_grid_attach(GTK_GRID(login_form), entry, 0, 0, 1, 1);
+
+    // Create a button to submit
+    GtkWidget *submit_button = gtk_button_new_with_label("Submit");
+    g_signal_connect(submit_button, "clicked", G_CALLBACK(on_show_text_from_buffer), entry);
+    gtk_grid_attach(GTK_GRID(login_form), submit_button, 0, 1, 1, 1);
+
+    // Show all widgets
+    gtk_widget_show(login_window);
+}
+
+static void open_admin_access_page(GtkButton *button, gpointer user_data){
+    GtkApplication *app = GTK_APPLICATION(user_data);
+    GtkWidget *admin_access_window = gtk_application_window_new(app);
+    gtk_window_set_title(GTK_WINDOW(admin_access_window), "ADMIN ACCESS ONLY");
+
+    // Create a grid for the login form
+    GtkWidget *admin_form = gtk_grid_new();
+    gtk_window_set_child(GTK_WINDOW(admin_access_window), admin_form);
+
+    // Create an entry widget
+    GtkWidget *entry = gtk_entry_new();
+    gtk_entry_set_placeholder_text(GTK_ENTRY(entry), "Enter your username");
+    gtk_grid_attach(GTK_GRID(admin_form), entry, 0, 0, 1, 1);
+
+    GtkWidget *entry2 = gtk_entry_new();
+    gtk_entry_set_placeholder_text(GTK_ENTRY(entry2), "Enter your password");
+    gtk_grid_attach(GTK_GRID(admin_form), entry2, 1, 0, 1, 1);
+
+    // Create a button to submit
+    GtkWidget *submit_button = gtk_button_new_with_label("Submit");
+    g_signal_connect(submit_button, "clicked", G_CALLBACK(on_show_text_from_buffer), entry);
+    gtk_grid_attach(GTK_GRID(admin_form), submit_button, 0, 1, 1, 1);
+
+    // Show all widgets
+    gtk_widget_show(admin_access_window);
+}
+
+static void activate(GtkApplication *app, gpointer user_data) {
     GtkWidget *window;
     GtkWidget *grid;
-    GtkWidget *button;
+    GtkWidget *login_button;
+    GtkWidget *admin_button;
+    GtkWidget *quit_button;
 
-    /* create a new window, and set its title */
-    window = gtk_application_window_new (app);
-    gtk_window_set_title (GTK_WINDOW (window), "Window");
+    window = gtk_application_window_new(app);
+    gtk_window_set_title(GTK_WINDOW(window), "Main Window");
 
-    /* Here we construct the container that is going pack our buttons */
-    grid = gtk_grid_new ();
-
-    /* Pack the container in the window */
-    gtk_window_set_child (GTK_WINDOW (window), grid);
-
-    button = gtk_button_new_with_label ("LOGIN: ");
-    g_signal_connect (button, "clicked", G_CALLBACK (print_hello), NULL);
-
-    /* Place the first button in the grid cell (0, 0), and make it fill
-     * just 1 cell horizontally and vertically (ie no spanning)
-     */
-    gtk_grid_attach (GTK_GRID (grid), button, 0, 0, 1, 1);
-
-    button = gtk_button_new_with_label ("SIGN UP: ");
-    g_signal_connect (button, "clicked", G_CALLBACK (on_show_text_from_buffer), NULL);
-
-    /* Place the second button in the grid cell (1, 0), and make it fill
-     * just 1 cell horizontally and vertically (ie no spanning)
-     */
-    gtk_grid_attach (GTK_GRID (grid), button, 1, 0, 1, 1);
-
-    button = gtk_button_new_with_label ("QUIT");
-    g_signal_connect_swapped (button, "clicked", G_CALLBACK (gtk_window_destroy), window);
-
-    /* Place the Quit button in the grid cell (0, 1), and make it
-     * span 2 columns.
-     */
-    gtk_grid_attach (GTK_GRID (grid), button, 0, 1, 2, 1);
-
-
-//    GtkWidget *p_grid = gtk_grid_new();
-//    GtkWidget *p_button = gtk_button_new_with_label("Click me");
-
-    gtk_grid_set_column_spacing(GTK_GRID(grid), 16);
-    gtk_grid_set_row_spacing(GTK_GRID(grid), 16);
-
-    gtk_grid_set_row_homogeneous(GTK_GRID(grid), TRUE);
-    gtk_grid_set_column_homogeneous(GTK_GRID(grid), TRUE);
-
-    GtkEntryBuffer *p_buffer_1 = gtk_entry_buffer_new(NULL, -1);
-
-    GtkWidget *p_entry_1 = gtk_entry_new_with_buffer(p_buffer_1);
-    GtkWidget *p_entry_2 = gtk_entry_new_with_buffer(p_buffer_1);
-
-    gtk_grid_attach(GTK_GRID(grid), GTK_WIDGET(p_entry_1), 4, 0, 3, 1);
-    gtk_grid_attach(GTK_GRID(grid), GTK_WIDGET(p_entry_2), 5, 1, 3, 1);
-//    gtk_grid_attach(GTK_GRID(grid), GTK_WIDGET(p_button), 0, 2, 3, 1);
-
-    char *p_text_in_entry = g_strdup(gtk_entry_buffer_get_text(p_buffer_1));
-
-    gtk_editable_get_text(GTK_EDITABLE(p_entry_1));
-    g_print(p_entry_1);
-
-    g_signal_connect(button, "clicked", G_CALLBACK(on_show_text_from_buffer),
-                    p_text_in_entry);
-
+    grid = gtk_grid_new();
     gtk_window_set_child(GTK_WINDOW(window), grid);
-    gtk_widget_show (window);
 
+    login_button = gtk_button_new_with_label("Login");
+    g_signal_connect(login_button, "clicked", G_CALLBACK(open_login_page), app);
+    gtk_grid_attach(GTK_GRID(grid), login_button, 0, 0, 1, 1);
+
+    admin_button = gtk_button_new_with_label("Admin Access");
+    g_signal_connect(admin_button, "clicked", G_CALLBACK(open_admin_access_page), app);
+    gtk_grid_attach(GTK_GRID(grid), admin_button, 1, 0, 1, 1);
+
+    quit_button = gtk_button_new_with_label("Quit");
+    g_signal_connect_swapped(quit_button, "clicked", G_CALLBACK(gtk_window_destroy), window);
+    gtk_grid_attach(GTK_GRID(grid), quit_button, 0, 1, 2, 1);
+
+    gtk_widget_show(window);
 }
 
-int
-main (int    argc,
-      char **argv)
-{
+int main(int argc, char **argv) {
     GtkApplication *app;
     int status;
 
-    app = gtk_application_new ("org.gtk.example", G_APPLICATION_DEFAULT_FLAGS);
-    g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
-    status = g_application_run (G_APPLICATION (app), argc, argv);
-    g_object_unref (app);
+    app = gtk_application_new("org.gtk.example", G_APPLICATION_FLAGS_NONE);
+    g_signal_connect(app, "activate", G_CALLBACK(activate), NULL);
+    status = g_application_run(G_APPLICATION(app), argc, argv);
+    g_object_unref(app);
 
     return status;
 }
