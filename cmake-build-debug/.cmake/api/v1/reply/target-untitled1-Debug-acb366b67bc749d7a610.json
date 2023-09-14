@@ -199,7 +199,8 @@
 				1,
 				2,
 				3,
-				5
+				4,
+				6
 			]
 		},
 		{
@@ -341,7 +342,7 @@
 			"language" : "CXX",
 			"sourceIndexes" : 
 			[
-				4
+				5
 			]
 		}
 	],
@@ -380,7 +381,8 @@
 				2,
 				3,
 				4,
-				5
+				5,
+				6
 			]
 		}
 	],
@@ -412,14 +414,20 @@
 		},
 		{
 			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "example_implementations.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
 			"compileGroupIndex" : 1,
-			"path" : "GUI.cpp",
+			"path" : "biometric_auth.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "example_implementations.c",
+			"path" : "transactions.c",
 			"sourceGroupIndex" : 0
 		}
 	],

@@ -1,5 +1,6 @@
 /Users/krishhashia/CLionProjects/untitled1/cmake-build-debug/CMakeFiles/untitled1.dir
 /Users/krishhashia/CLionProjects/untitled1/cmake-build-debug/CMakeFiles/gui.dir
 /Users/krishhashia/CLionProjects/untitled1/cmake-build-debug/CMakeFiles/examp.dir
+/Users/krishhashia/CLionProjects/untitled1/cmake-build-debug/CMakeFiles/bioauth.dir
 /Users/krishhashia/CLionProjects/untitled1/cmake-build-debug/CMakeFiles/edit_cache.dir
 /Users/krishhashia/CLionProjects/untitled1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
